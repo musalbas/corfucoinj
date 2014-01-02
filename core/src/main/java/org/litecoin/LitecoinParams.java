@@ -25,6 +25,7 @@ import org.spongycastle.util.encoders.Hex;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -36,7 +37,7 @@ public class LitecoinParams extends NetworkParameters {
     public LitecoinParams() {
         super();
         id = "org.litecoin.production";
-        proofOfWorkLimit = new Sha256Hash("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff").toBigInteger().shiftRight(20);
+        proofOfWorkLimit = Utils.decodeCompactBits(0x1e0fffffL);
         addressHeader = 48;
         acceptableAddressCodes = new int[] { 48 };
         port = 9333;
@@ -95,7 +96,15 @@ public class LitecoinParams extends NetworkParameters {
     }
 
     /** The number of previous blocks to look at when calculating the next Block's difficulty */
-    public int getRetargetBlockCount() { return getInterval(); }
+    @Override
+    public int getRetargetBlockCount(StoredBlock cursor) {
+        if (cursor.getHeight() + 1 != getInterval()) {
+            //Logger.getLogger("wallet_ltc").info("Normal LTC retarget");
+            return getInterval();
+        } else {
+            return getInterval() - 1;
+        }
+    }
 
     /** Gets the hash of the given block for the purpose of checking its PoW */
     public Sha256Hash calculateBlockPoWHash(Block b) {

@@ -821,7 +821,8 @@ public abstract class AbstractBlockChain {
         // two weeks after the initial block chain download.
         long now = System.currentTimeMillis();
         StoredBlock cursor = blockStore.get(prev.getHash());
-        for (int i = 0; i < params.getRetargetBlockCount(); i++) {
+
+        for (int i = 0; i < params.getRetargetBlockCount(cursor); i++) {
             if (cursor == null) {
                 // This should never happen. If it does, it means we are following an incorrect or busted chain.
                 throw new VerificationException(
@@ -836,6 +837,7 @@ public abstract class AbstractBlockChain {
             log.info("Difficulty transition traversal took {}msec", elapsed);
 
         Block blockIntervalAgo = cursor.getHeader();
+        log.info("Using block " + cursor.getHeight() + " to calculate next difficulty");
         int timespan = (int) (prev.getTimeSeconds() - blockIntervalAgo.getTimeSeconds());
         // Limit the adjustment step.
         final int targetTimespan = params.getTargetTimespan();
@@ -845,8 +847,11 @@ public abstract class AbstractBlockChain {
             timespan = targetTimespan * 4;
 
         BigInteger newDifficulty = Utils.decodeCompactBits(prev.getDifficultyTarget());
+        log.info("Old diff target: " + newDifficulty);
         newDifficulty = newDifficulty.multiply(BigInteger.valueOf(timespan));
+        log.info("Times " + timespan);
         newDifficulty = newDifficulty.divide(BigInteger.valueOf(targetTimespan));
+        log.info("Div by " + targetTimespan);
 
         if (newDifficulty.compareTo(params.getProofOfWorkLimit()) > 0) {
             log.info("Difficulty hit proof of work limit: {}", newDifficulty.toString(16));

@@ -40,7 +40,7 @@ public class BuildCheckpoints {
         long now = new Date().getTime() / 1000;
         peerGroup.setFastCatchupTimeSecs(now);
 
-        final long oneMonthAgo = now - (86400 * 30);
+        final long oneMonthAgo = now - (86400 * 7);
 
         chain.addListener(new AbstractBlockChainListener() {
             @Override
@@ -85,10 +85,10 @@ public class BuildCheckpoints {
         store.close();
 
         // Sanity check the created file.
-        CheckpointManager manager = new CheckpointManager(params, new FileInputStream("checkpoints"));
+        CheckpointManager manager = new CheckpointManager(params, new FileInputStream("checkpointslitecoin"));
         checkState(manager.numCheckpoints() == checkpoints.size());
-        StoredBlock test = manager.getCheckpointBefore(1346335719);  // Just after block 200,000
-        checkState(test.getHeight() == 199584);
-        checkState(test.getHeader().getHashAsString().equals("49b13ca1eb4a55ced4e99e38469db12b74428c19fd2fb9fa0c262e5839eccf6a"));
+        //StoredBlock test = manager.getCheckpointBefore(1346335719);  // Just after block 200,000
+        //checkState(test.getHeight() == 199584);
+        //checkState(test.getHeader().getHashAsString().equals("49b13ca1eb4a55ced4e99e38469db12b74428c19fd2fb9fa0c262e5839eccf6a"));
     }
 }
