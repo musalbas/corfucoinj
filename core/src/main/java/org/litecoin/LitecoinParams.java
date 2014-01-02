@@ -107,6 +107,8 @@ public class LitecoinParams extends NetworkParameters {
         }
     }
 
+    @Override public String getURIScheme() { return "litecoin:"; }
+
     /** Gets the hash of the given block for the purpose of checking its PoW */
     public Sha256Hash calculateBlockPoWHash(Block b) {
         byte[] blockHeader = b.cloneAsHeader().bitcoinSerialize();
