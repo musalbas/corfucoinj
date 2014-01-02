@@ -36,6 +36,7 @@ public class LitecoinWallet extends Wallet {
     private void setRequestFeeForOutputs(SendRequest req) {
         req.ensureMinRequiredFee = false;
         req.fee = Utils.CENT.divide(BigInteger.TEN);
+        req.feePerKb = Utils.CENT.divide(BigInteger.TEN);
         for (TransactionOutput output : req.tx.getOutputs())
             if (output.getValue().compareTo(Utils.CENT.divide(BigInteger.TEN)) < 0)
                 req.fee = req.fee.add(Utils.CENT.divide(BigInteger.TEN));
