@@ -102,6 +102,7 @@ public class LitecoinParams extends NetworkParameters {
             //Logger.getLogger("wallet_ltc").info("Normal LTC retarget");
             return getInterval();
         } else {
+            //Logger.getLogger("wallet_ltc").info("Genesis LTC retarget");
             return getInterval() - 1;
         }
     }

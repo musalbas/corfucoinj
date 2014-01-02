@@ -822,22 +822,27 @@ public abstract class AbstractBlockChain {
         long now = System.currentTimeMillis();
         StoredBlock cursor = blockStore.get(prev.getHash());
 
-        for (int i = 0; i < params.getRetargetBlockCount(cursor); i++) {
+        int goBack = params.getRetargetBlockCount(cursor);
+
+        for (int i = 0; i < goBack; i++) {
             if (cursor == null) {
                 // This should never happen. If it does, it means we are following an incorrect or busted chain.
                 throw new VerificationException(
                         "Difficulty transition point but we did not find a way back to the genesis block.");
             }
-            StoredBlock nextCursor = blockStore.get(cursor.getHeader().getPrevBlockHash());
-            if (nextCursor != null)
-                cursor = nextCursor;
+            cursor = blockStore.get(cursor.getHeader().getPrevBlockHash());
         }
+
         long elapsed = System.currentTimeMillis() - now;
         if (elapsed > 50)
             log.info("Difficulty transition traversal took {}msec", elapsed);
 
+        // Check if our cursor is null.  If it is, we've used checkpoints to restore.
+        if(cursor == null) return;
+
         Block blockIntervalAgo = cursor.getHeader();
         log.info("Using block " + cursor.getHeight() + " to calculate next difficulty");
+        log.info(cursor.toString());
         int timespan = (int) (prev.getTimeSeconds() - blockIntervalAgo.getTimeSeconds());
         // Limit the adjustment step.
         final int targetTimespan = params.getTargetTimespan();
