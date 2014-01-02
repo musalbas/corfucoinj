@@ -19,7 +19,7 @@ public class LitecoinWallet extends Wallet {
 
     /** Transactions which give us less than this value are ignored, this is not ideal as we can still get spammed with
       * tons of small outputs in a single transaction, but at that point we received actual money, so...oh well */
-    public BigInteger MIN_VALUE = Utils.CENT.divide(BigInteger.valueOf(100));
+    public BigInteger MIN_VALUE = Utils.CENT.divide(BigInteger.valueOf(1000));
 
     @Override
     public boolean isTransactionRelevant(Transaction tx) {
