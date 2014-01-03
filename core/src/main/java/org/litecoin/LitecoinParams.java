@@ -25,7 +25,6 @@ import org.spongycastle.util.encoders.Hex;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
-import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -42,6 +41,7 @@ public class LitecoinParams extends NetworkParameters {
         acceptableAddressCodes = new int[] { 48 };
         port = 9333;
         packetMagic = 0xfbc0b6dbL;
+        dumpedPrivateKeyHeader = 128 + addressHeader;
 
         targetTimespan = (int)(3.5 * 24 * 60 * 60);
         interval = targetTimespan/((int)(2.5 * 60));
