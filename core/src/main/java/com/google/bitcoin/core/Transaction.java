@@ -749,6 +749,19 @@ public class Transaction extends ChildMessage implements Serializable {
     }
 
     /**
+     * Removes the given output to this transaction.  Returns true if removed.
+     */
+    public boolean removeOutput(TransactionOutput to) {
+        unCache();
+        to.setParent(this);
+        if(outputs.remove(to)) {
+            adjustLength(outputs.size(), to.length);
+            return true;
+        }
+        else
+            return false;
+    }
+    /**
      * Once a transaction has some inputs and outputs added, the signatures in the inputs can be calculated. The
      * signature is over the transaction itself, to prove the redeemer actually created that transaction,
      * so we have to do this step last.<p>
@@ -1253,4 +1266,5 @@ public class Transaction extends ChildMessage implements Serializable {
     public void setPurpose(Purpose purpose) {
         this.purpose = purpose;
     }
+    public int getLength() { parseLite(); return length; }
 }
