@@ -22,6 +22,7 @@ import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.Utils;
+import com.google.bitcoin.params.MainNetParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -294,10 +295,22 @@ public class BitcoinURI {
         return builder.toString();
     }
 
+    // Bitcoin shortcut with old-style params (omits custom network params)
+    // Takes an address object instead of an address string
     public static String convertToBitcoinURI(Address address, BigInteger amount, String label, String message) {
         return convertToBitcoinURI(address.toString(), amount, label, message);
     }
 
+    // Bitcoin shortcut with old-style params (omits custom network params)
+    // Assumes Bitcoin MainNet, only used for URI scheme.
+    public static String convertToBitcoinURI(String address, BigInteger amount, String label, String message) {
+        return convertToBitcoinURI(new MainNetParams(), address, amount, label, message);
+    }
+
+    // New-style (with network params) address object handling
+    public static String convertToBitcoinURI(NetworkParameters params, Address address, BigInteger amount, String label, String message) {
+        return convertToBitcoinURI(params, address.toString(), amount, label, message);
+    }
     /**
      * Simple Bitcoin URI builder using known good fields.
      * 
@@ -307,15 +320,15 @@ public class BitcoinURI {
      * @param message A message
      * @return A String containing the Bitcoin URI
      */
-    public static String convertToBitcoinURI(String address, @Nullable BigInteger amount, @Nullable String label,
-                                             @Nullable String message) {
+    public static String convertToBitcoinURI(NetworkParameters params, String address, @Nullable BigInteger amount,
+                                             @Nullable String label, @Nullable String message) {
         checkNotNull(address);
         if (amount != null && amount.compareTo(BigInteger.ZERO) < 0) {
             throw new IllegalArgumentException("Amount must be positive");
         }
         
         StringBuilder builder = new StringBuilder();
-        builder.append(BITCOIN_SCHEME).append(":").append(address);
+        builder.append(params.getURIScheme()).append(":").append(address);
         
         boolean questionMarkHasBeenOutput = false;
         

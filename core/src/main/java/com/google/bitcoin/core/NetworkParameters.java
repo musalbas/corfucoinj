@@ -340,5 +340,5 @@ public abstract class NetworkParameters implements Serializable {
     public Sha256Hash calculateBlockPoWHash(Block b) { return b.getHash(); }
 
     /** Gets the URI scheme */
-    public String getURIScheme() { return "bitcoin:"; }
+    public String getURIScheme() { return "bitcoin"; }
 }
