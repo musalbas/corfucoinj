@@ -233,8 +233,12 @@ public abstract class Message implements Serializable {
         // Check if we will need more bytes to encode the length prefix.
         if (newArraySize == 1)
             length++;  // The assumption here is we never call adjustLength with the same arraySize as before.
-        else if (newArraySize != 0)
-            length += VarInt.sizeOf(newArraySize) - VarInt.sizeOf(newArraySize - 1);
+        else if (newArraySize != 0) {
+            if(adjustment >= 0)
+                length += VarInt.sizeOf(newArraySize) - VarInt.sizeOf(newArraySize - 1);
+            else
+                length -= VarInt.sizeOf(newArraySize + 1) - VarInt.sizeOf(newArraySize);
+        }
     }
 
     /**

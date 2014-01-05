@@ -755,7 +755,7 @@ public class Transaction extends ChildMessage implements Serializable {
         unCache();
         to.setParent(this);
         if(outputs.remove(to)) {
-            adjustLength(outputs.size(), to.length);
+            adjustLength(outputs.size(), -1 * to.length);
             return true;
         }
         else
