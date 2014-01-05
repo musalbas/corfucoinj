@@ -88,7 +88,7 @@ public class BitcoinURI {
     public static final String FIELD_AMOUNT = "amount";
     public static final String FIELD_ADDRESS = "address";
 
-    public static final String BITCOIN_SCHEME = "bitcoin";
+    public static final String BITCOIN_SCHEME = "bitcoin:";
     private static final String ENCODED_SPACE_CHARACTER = "%20";
     private static final String AMPERSAND_SEPARATOR = "&";
     private static final String QUESTION_MARK_SEPARATOR = "?";
@@ -138,7 +138,7 @@ public class BitcoinURI {
         // For instance with : bitcoin:129mVqKUmJ9uwPxKJBnNdABbuaaNfho4Ha?amount=0.06&label=Tom%20%26%20Jerry
         // the & (%26) in Tom and Jerry gets interpreted as a separator and the label then gets parsed
         // as 'Tom ' instead of 'Tom & Jerry')
-        String schemeRequired = params == null ? "bitcoin:" : params.getURIScheme();
+        String schemeRequired = params == null ? BITCOIN_SCHEME : params.getURIScheme();
         String schemeSpecificPart;
         if (input.startsWith(schemeRequired + "//")) {
             schemeSpecificPart = input.substring((schemeRequired + "//").length());
@@ -328,7 +328,7 @@ public class BitcoinURI {
         }
         
         StringBuilder builder = new StringBuilder();
-        builder.append(params.getURIScheme()).append(":").append(address);
+        builder.append(params.getURIScheme()).append(address);
         
         boolean questionMarkHasBeenOutput = false;
         
