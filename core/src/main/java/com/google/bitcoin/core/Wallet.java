@@ -1631,6 +1631,10 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
             req.emptyWallet = true;
             return req;
         }
+
+        public void setCompleted(boolean completed) {
+            this.completed = completed;
+        }
     }
 
     /**
