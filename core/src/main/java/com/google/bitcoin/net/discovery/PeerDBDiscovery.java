@@ -286,6 +286,8 @@ public class PeerDBDiscovery implements PeerDiscovery {
         Collections.shuffle(peerList);
         Iterator<PeerData> iterator = peerList.iterator();
         for (int i = 0; i < addressesToReturn; i++) {
+            if(!iterator.hasNext())
+                break;
             PeerData peer = iterator.next();
             while (peer.isBad() && iterator.hasNext())
                 peer = iterator.next();
