@@ -54,17 +54,10 @@ public class LitcoinPeerDBDiscovery extends PeerDBDiscovery {
         }
         @Override
         public void onPeerConnected(Peer p, int peerCount) {
-            if ((p.getPeerVersionMessage().localServices & (1<<1)) == (1<<1) &&
-                    p.getPeerVersionMessage().clientVersion >= 70002)
+            if (p.getPeerVersionMessage().clientVersion >= 70002)
                 parent.onPeerConnected(p, peerCount);
             else
                 p.close();
-        }
-
-        @Override
-        public void onPeerDisconnected(Peer p, int peerCount) {
-            if (p.getPeerVersionMessage() != null && (p.getPeerVersionMessage().localServices & (1<<1)) == (1<<1))
-                parent.onPeerDisconnected(p, peerCount);
         }
     }
       
