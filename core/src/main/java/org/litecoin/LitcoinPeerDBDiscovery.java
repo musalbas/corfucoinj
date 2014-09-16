@@ -59,8 +59,16 @@ public class LitcoinPeerDBDiscovery extends PeerDBDiscovery {
             else
                 p.close();
         }
+
+        @Override
+        public void onPeerDisconnected(Peer p, int peerCount) {
+            if (p.getPeerVersionMessage() != null && (p.getPeerVersionMessage().localServices & (1<<1)) == (1<<1))
+            {
+                this.parent.onPeerDisconnected(p, peerCount);
+            }
+        }
     }
-      
+
     private static class PeerGroupWrapper extends PeerGroup {
         private PeerGroup parent;
         NetworkParameters params;
