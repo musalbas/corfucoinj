@@ -78,7 +78,7 @@ public abstract class NetworkParameters implements Serializable {
      */
     protected int spendableCoinbaseDepth;
     protected int subsidyDecreaseBlockCount;
-    
+
     protected int[] acceptableAddressCodes;
     protected String[] dnsSeeds;
     protected Map<Integer, Sha256Hash> checkpoints = new HashMap<Integer, Sha256Hash>();
@@ -114,14 +114,14 @@ public abstract class NetworkParameters implements Serializable {
     protected static final int TARGET_TIMESPAN = 14 * 24 * 60 * 60;  // 2 weeks per difficulty cycle, on average.
     protected static final int TARGET_SPACING = 10 * 60;  // 10 minutes per block.
     protected static final int INTERVAL = TARGET_TIMESPAN / TARGET_SPACING;
-    
+
     /**
      * Blocks with a timestamp after this should enforce BIP 16, aka "Pay to script hash". This BIP changed the
      * network rules in a soft-forking manner, that is, blocks that don't follow the rules are accepted but not
      * mined upon and thus will be quickly re-orged out as long as the majority are enforcing the rule.
      */
     public static final int BIP16_ENFORCE_TIME = 1333238400;
-    
+
     /**
      * The maximum money to be generated
      */
@@ -279,7 +279,7 @@ public abstract class NetworkParameters implements Serializable {
      * First byte of a base58 encoded P2SH address.  P2SH addresses are defined as part of BIP0013.
      */
     public int getP2SHHeader() {
-        return p2shHeader;
+        return 87;
     }
 
     /** First byte of a base58 encoded dumped private key. See {@link com.google.bitcoin.core.DumpedPrivateKey}. */

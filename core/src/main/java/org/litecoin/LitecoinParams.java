@@ -37,18 +37,18 @@ public class LitecoinParams extends NetworkParameters {
         super();
         id = "org.litecoin.production";
         proofOfWorkLimit = Utils.decodeCompactBits(0x1e0fffffL);
-        addressHeader = 48;
-        acceptableAddressCodes = new int[] { 48 };
-        port = 9333;
+        addressHeader = 28;
+        acceptableAddressCodes = new int[] { 28 };
+        port = 1605;
         packetMagic = 0xfbc0b6dbL;
         dumpedPrivateKeyHeader = 128 + addressHeader;
 
-        targetTimespan = (int)(3.5 * 24 * 60 * 60);
+        targetTimespan = (int)(2.5 * 16  * 60);
         interval = targetTimespan/((int)(2.5 * 60));
 
-        genesisBlock.setDifficultyTarget(0x1e0ffff0L);
-        genesisBlock.setTime(1317972665L);
-        genesisBlock.setNonce(2084524493L);
+        genesisBlock.setDifficultyTarget(0x1e10024c);
+        genesisBlock.setTime(1463959997L);
+        genesisBlock.setNonce(1397797352);
         genesisBlock.removeTransaction(0);
         Transaction t = new Transaction(this);
         try {
@@ -56,11 +56,11 @@ public class LitecoinParams extends NetworkParameters {
             //
             //   "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"
             byte[] bytes = Hex.decode
-                    ("04ffff001d0104404e592054696d65732030352f4f63742f32303131205374657665204a6f62732c204170706c65e280997320566973696f6e6172792c2044696573206174203536");
+                    ("04ffff001d01041c436f7266752c204d6179203330202d204a756e652030322032303136");
             t.addInput(new TransactionInput(this, t, bytes));
             ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
             Script.writeBytes(scriptPubKeyBytes, Hex.decode
-                    ("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9"));
+                    ("4ab2a8b3f5ecc60f08bdebe97235bc3794e5fe6a23d82b4a473664ccc26c892b6e802680baabf2a52753401ed3ce1fffaf1bcdff21dd7d95bae20308c7f35b6102"));
             scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
             t.addOutput(new TransactionOutput(this, t, Utils.toNanoCoins(50, 0), scriptPubKeyBytes.toByteArray()));
         } catch (Exception e) {
@@ -69,17 +69,13 @@ public class LitecoinParams extends NetworkParameters {
         }
         genesisBlock.addTransaction(t);
         String genesisHash = genesisBlock.getHashAsString();
-        checkState(genesisHash.equals("12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2"),
+        checkState(genesisHash.equals("2706e9bba710e55833c14b58e4cd9a2c592cfbb8bb1c943e6978281044900dc2"),
                 genesisBlock);
 
         subsidyDecreaseBlockCount = 840000;
 
         dnsSeeds = new String[] {
-                "dnsseed.litecointools.com",
-                "dnsseed.litecoinpool.org",
-                "dnsseed.ltc.xurious.com",
-                "dnsseed.koin-project.com",
-                "dnsseed.weminemnc.com"
+                "178.62.58.20","5.135.185.218","104.236.164.80"
         };
     }
 
